@@ -41,6 +41,7 @@ import io.cdap.cdap.api.annotation.Beta;
 import io.cdap.cdap.api.app.AppStateStore;
 import io.cdap.cdap.api.app.Application;
 import io.cdap.cdap.api.artifact.ArtifactRange;
+import io.cdap.cdap.api.auditlogging.AuditLogWriter;
 import io.cdap.cdap.api.dataset.DatasetAdmin;
 import io.cdap.cdap.api.dataset.DatasetProperties;
 import io.cdap.cdap.api.dataset.module.DatasetModule;
@@ -336,6 +337,7 @@ public class TestBase {
             // Needed by MonitorHandlerModuler
             bind(TwillRunner.class).to(NoopTwillRunnerService.class);
             bind(MetadataSubscriberService.class).in(Scopes.SINGLETON);
+            bind(AuditLogWriter.class).toInstance(auditLogContexts -> {});
           }
         }
     );

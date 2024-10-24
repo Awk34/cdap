@@ -22,10 +22,12 @@ import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+import io.cdap.cdap.api.auditlogging.AuditLogWriter;
 import io.cdap.cdap.common.conf.CConfiguration;
 import io.cdap.cdap.common.conf.Constants;
 import io.cdap.cdap.common.utils.Networks;
 import io.cdap.cdap.gateway.handlers.CommonHandlers;
+import io.cdap.cdap.security.auth.MessagingAuditLogWriter;
 import io.cdap.cdap.support.handlers.SupportBundleHttpHandler;
 import io.cdap.cdap.support.services.SupportBundleInternalService;
 import io.cdap.cdap.support.task.factory.SupportBundlePipelineInfoTaskFactory;
@@ -54,6 +56,7 @@ public final class SupportBundleServiceModule extends AbstractModule {
     supportBundleTaskFactoryMultibinder.addBinding().to(SupportBundlePipelineInfoTaskFactory.class);
     supportBundleTaskFactoryMultibinder.addBinding().to(SupportBundleSystemLogTaskFactory.class);
     supportBundleTaskFactoryMultibinder.addBinding().to(SupportBundleVMInfoTaskFactory.class);
+    bind(AuditLogWriter.class).to(MessagingAuditLogWriter.class).in(Scopes.SINGLETON);
   }
 
   @Provides

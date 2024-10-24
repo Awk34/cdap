@@ -16,9 +16,11 @@
 
 package io.cdap.cdap.internal.app.runtime.distributed;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import io.cdap.cdap.api.auditlogging.AuditLogWriter;
 import io.cdap.cdap.app.guice.ClusterMode;
 import io.cdap.cdap.app.runtime.ProgramOptions;
 import io.cdap.cdap.app.runtime.ProgramStateWriter;
@@ -100,7 +102,7 @@ public class ProgramTwillRunnableModuleTest {
       }
     }.createModule(CConfiguration.create(), new Configuration(),
                    createProgramOptions(programRunId), programRunId);
-    Injector injector = Guice.createInjector(module);
+    Injector injector = Guice.createInjector(module, getAuditLogNoOpModule());
     injector.getInstance(ServiceProgramRunner.class);
     injector.getInstance(ProgramStateWriter.class);
   }
@@ -151,7 +153,10 @@ public class ProgramTwillRunnableModuleTest {
       }
     }.createModule(CConfiguration.create(), new Configuration(),
                    createProgramOptions(programRunId), programRunId);
-    Injector injector = Guice.createInjector(module);
+
+
+
+    Injector injector = Guice.createInjector(module,getAuditLogNoOpModule());
     injector.getInstance(SparkProgramRunner.class);
     injector.getInstance(ProgramStateWriter.class);
 
@@ -176,5 +181,14 @@ public class ProgramTwillRunnableModuleTest {
     }
 
     return new SimpleProgramOptions(programRunId.getParent(), new BasicArguments(systemArgs), new BasicArguments());
+  }
+
+  private Module getAuditLogNoOpModule(){
+    return new AbstractModule() {
+      @Override
+      protected void configure() {
+        bind(AuditLogWriter.class).toInstance(auditLogContexts -> {});
+      }
+    };
   }
 }

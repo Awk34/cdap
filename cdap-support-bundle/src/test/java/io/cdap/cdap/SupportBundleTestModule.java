@@ -17,6 +17,7 @@
 package io.cdap.cdap;
 
 import com.google.inject.AbstractModule;
+import io.cdap.cdap.api.auditlogging.AuditLogWriter;
 import io.cdap.cdap.app.guice.AppFabricServiceRuntimeModule;
 import io.cdap.cdap.app.guice.AuthorizationModule;
 import io.cdap.cdap.app.guice.MonitorHandlerModule;
@@ -104,5 +105,6 @@ public class SupportBundleTestModule extends AbstractModule {
     install(new MockProvisionerModule());
     // Needed by MonitorHandlerModuler
     bind(TwillRunner.class).to(NoopTwillRunnerService.class);
+    bind(AuditLogWriter.class).toInstance(auditLogContexts -> {});
   }
 }

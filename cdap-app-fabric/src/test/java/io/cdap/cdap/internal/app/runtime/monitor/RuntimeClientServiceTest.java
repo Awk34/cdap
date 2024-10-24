@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import io.cdap.cdap.api.auditlogging.AuditLogWriter;
 import io.cdap.cdap.api.data.schema.Schema;
 import io.cdap.cdap.api.dataset.lib.CloseableIterator;
 import io.cdap.cdap.api.messaging.Message;
@@ -188,6 +189,7 @@ public class RuntimeClientServiceTest {
                 NoOpMetricsCollectionService.class);
             bind(DiscoveryService.class).toInstance(discoveryService);
             bind(DiscoveryServiceClient.class).toInstance(discoveryService);
+            bind(AuditLogWriter.class).toInstance(auditLogContexts -> {});
           }
         }
     );
@@ -232,6 +234,7 @@ public class RuntimeClientServiceTest {
             bind(DiscoveryService.class).toInstance(discoveryService);
             bind(DiscoveryServiceClient.class).toInstance(discoveryService);
             bind(ProgramRunId.class).toInstance(PROGRAM_RUN_ID);
+            bind(AuditLogWriter.class).toInstance(auditLogContexts -> {});
           }
         }
     );

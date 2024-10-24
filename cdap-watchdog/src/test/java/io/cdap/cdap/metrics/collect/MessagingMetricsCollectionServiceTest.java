@@ -19,7 +19,9 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
+import com.google.inject.AbstractModule;
 import com.google.inject.Module;
+import io.cdap.cdap.api.auditlogging.AuditLogWriter;
 import io.cdap.cdap.api.data.schema.Schema;
 import io.cdap.cdap.api.dataset.lib.CloseableIterator;
 import io.cdap.cdap.api.messaging.TopicNotFoundException;
@@ -38,7 +40,7 @@ import io.cdap.cdap.proto.id.TopicId;
 import io.cdap.cdap.security.authorization.AuthorizationEnforcementModule;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.Assert;
@@ -136,6 +138,15 @@ public class MessagingMetricsCollectionServiceTest extends MetricsTestBase {
 
   @Override
   protected List<Module> getAdditionalModules() {
-    return Collections.singletonList(new AuthorizationEnforcementModule().getNoOpModules());
+    List<Module> modules = new ArrayList<>();
+    modules.add(new AuthorizationEnforcementModule().getNoOpModules());
+    modules.add(new AbstractModule() {
+      @Override
+      protected void configure() {
+        bind(AuditLogWriter.class).toInstance(auditLogContexts -> {});
+      }
+    });
+
+    return modules;
   }
 }
