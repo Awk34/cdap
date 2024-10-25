@@ -25,6 +25,7 @@ import com.google.inject.PrivateModule;
 import com.google.inject.Scopes;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Names;
+import io.cdap.cdap.api.auditlogging.AuditLogWriter;
 import io.cdap.cdap.common.conf.CConfiguration;
 import io.cdap.cdap.common.conf.Constants;
 import io.cdap.cdap.common.guice.ConfigModule;
@@ -139,6 +140,7 @@ public final class MetricsProcessorTwillRunnable extends AbstractMasterTwillRunn
           @Override
           protected void configure() {
             bind(OwnerAdmin.class).to(DefaultOwnerAdmin.class);
+            bind(AuditLogWriter.class).toInstance(auditLogContexts -> {});
           }
         }
     );

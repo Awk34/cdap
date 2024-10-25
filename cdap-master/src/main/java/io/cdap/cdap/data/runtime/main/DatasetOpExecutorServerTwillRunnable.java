@@ -22,6 +22,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Scopes;
+import io.cdap.cdap.api.auditlogging.AuditLogWriter;
 import io.cdap.cdap.app.guice.EntityVerifierModule;
 import io.cdap.cdap.app.store.Store;
 import io.cdap.cdap.common.conf.CConfiguration;
@@ -134,6 +135,7 @@ public class DatasetOpExecutorServerTwillRunnable extends AbstractMasterTwillRun
             // TODO (CDAP-14677): find a better way to inject metadata publisher
             bind(MetadataPublisher.class).to(MessagingMetadataPublisher.class);
             bind(MetadataServiceClient.class).to(DefaultMetadataServiceClient.class);
+            bind(AuditLogWriter.class).toInstance(auditLogContexts -> {});
           }
         });
   }

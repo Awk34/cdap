@@ -30,7 +30,7 @@ import org.junit.Test;
  */
 public class TwillRunnableTest {
 
-//  @Test
+  @Test
   public void testDatasetOpExecutorTwillRunnableInjector() {
     Injector injector = DatasetOpExecutorServerTwillRunnable.createInjector(CConfiguration.create(),
         new Configuration(), "");
@@ -40,25 +40,25 @@ public class TwillRunnableTest {
     Assert.assertNotNull(namespaceQueryAdmin);
   }
 
-//  @Test
+  @Test
   public void testMessagingServiceTwillRunnableInjector() {
     MessagingServiceTwillRunnable.createInjector(CConfiguration.create(), new Configuration());
   }
 
-//  @Test
+  @Test
   public void testMetricsTwillRunnableInjector() {
     MetricsTwillRunnable
         .createGuiceInjector(CConfiguration.create(), new Configuration(), "");
   }
 
-//  @Test
+  @Test
   public void testMetricsProcessorTwillRunnableInjector() {
     MetricsProcessorTwillRunnable
         .createGuiceInjector(CConfiguration.create(), new Configuration(), "",
             new MockTwillContext());
   }
 
-//  @Test
+  @Test
   public void testLogSaverTwillRunnableInjector() {
     LogSaverTwillRunnable
         .createGuiceInjector(CConfiguration.create(), new Configuration(), new MockTwillContext());

@@ -22,6 +22,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Scopes;
+import io.cdap.cdap.api.auditlogging.AuditLogWriter;
 import io.cdap.cdap.common.conf.CConfiguration;
 import io.cdap.cdap.common.conf.Constants;
 import io.cdap.cdap.common.guice.ConfigModule;
@@ -123,6 +124,7 @@ public final class LogSaverTwillRunnable extends AbstractMasterTwillRunnable {
           protected void configure() {
             bind(OwnerAdmin.class).to(DefaultOwnerAdmin.class);
             bind(UGIProvider.class).to(RemoteUGIProvider.class).in(Scopes.SINGLETON);
+            bind(AuditLogWriter.class).toInstance(auditLogContexts -> {});
           }
         }
     );
