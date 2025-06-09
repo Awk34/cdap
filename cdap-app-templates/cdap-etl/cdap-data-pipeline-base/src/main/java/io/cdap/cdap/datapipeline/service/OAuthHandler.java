@@ -26,6 +26,7 @@ import io.cdap.cdap.api.service.http.HttpServiceResponder;
 import io.cdap.cdap.api.service.http.SystemHttpServiceContext;
 import io.cdap.cdap.datapipeline.oauth.CredentialIsValidResponse;
 import io.cdap.cdap.datapipeline.oauth.GetAccessTokenResponse;
+import io.cdap.cdap.datapipeline.oauth.OAuthAccessToken;
 import io.cdap.cdap.datapipeline.oauth.OAuthClientCredentials;
 import io.cdap.cdap.datapipeline.oauth.OAuthProvider;
 import io.cdap.cdap.datapipeline.oauth.OAuthProvider.CredentialEncodingStrategy;
@@ -208,7 +209,12 @@ public class OAuthHandler extends AbstractSystemHttpServiceHandler {
             HttpURLConnection.HTTP_INTERNAL_ERROR, "Failed to parse JSON: " + e.getMessage(), e);
       }
 
-      if (refreshTokenResponse.getRefreshToken() == null || refreshTokenResponse.getRefreshToken().isEmpty()) {
+      boolean hasRefreshToken = refreshTokenResponse.getRefreshToken() != null
+          && !refreshTokenResponse.getRefreshToken().isEmpty();
+      boolean hasAccessToken = refreshTokenResponse.getAccessToken() != null
+          && !refreshTokenResponse.getAccessToken().isEmpty();
+
+      if (!hasAccessToken && !hasRefreshToken) {
         throw new OAuthServiceException(
             HttpURLConnection.HTTP_BAD_REQUEST,
             String.format("Refresh token response is missing the required access token or refresh token. See the full response body: %s", refreshTokenResponse);
