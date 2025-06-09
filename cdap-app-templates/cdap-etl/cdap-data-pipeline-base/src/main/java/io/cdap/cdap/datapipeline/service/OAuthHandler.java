@@ -45,7 +45,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Objects;
 import java.util.Optional;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -286,7 +285,8 @@ public class OAuthHandler extends AbstractSystemHttpServiceHandler {
         try {
           oauthStore.writeRefreshToken(provider, credentialId, newRefreshToken);
         } catch (OAuthStoreException e) {
-          LOG.error("An error occurred while writing the new refresh token", e);
+          throw new OAuthServiceException(
+              HttpURLConnection.HTTP_INTERNAL_ERROR, "Unable to write refresh token.");
         }
       }
 
