@@ -208,12 +208,7 @@ public class OAuthHandler extends AbstractSystemHttpServiceHandler {
             HttpURLConnection.HTTP_INTERNAL_ERROR, "Failed to parse JSON: " + e.getMessage(), e);
       }
 
-      boolean hasRefreshToken = refreshTokenResponse.getRefreshToken() != null
-          && !refreshTokenResponse.getRefreshToken().isEmpty();
-      boolean hasAccessToken = refreshTokenResponse.getAccessToken() != null
-          && !refreshTokenResponse.getAccessToken().isEmpty();
-
-      if (!hasAccessToken && !hasRefreshToken) {
+      if (refreshTokenResponse.getRefreshToken() == null || refreshTokenResponse.getRefreshToken().isEmpty()) {
         throw new OAuthServiceException(
             HttpURLConnection.HTTP_BAD_REQUEST,
             String.format("Refresh token response is missing the required access token or refresh token. See the full response body: %s", refreshTokenResponse);
